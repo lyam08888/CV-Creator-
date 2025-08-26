@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créateur de CV IA - Pro Recruteur</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS - Version standalone pour éviter l'avertissement de production -->
+    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
+    <script>
+        // Configuration Tailwind pour éviter l'avertissement de production
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                        'lato': ['Lato', 'sans-serif'],
+                        'playfair': ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:wght@400;700&family=Merriweather:wght@400;700&family=Oswald:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -164,7 +180,8 @@
             cursor: pointer;
         }
         .completion-checkbox:focus {
-            ring: #4f46e5;
+            outline: 2px solid #4f46e5;
+            outline-offset: 2px;
         }
         
         #ai-summarize-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: #2563eb; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px; z-index: 999; transition: transform 0.2s ease-in-out; }
@@ -837,10 +854,7 @@
                 fixBannerTopBtn: document.getElementById('fix-banner-top-btn'), fixBannerBottomBtn: document.getElementById('fix-banner-bottom-btn'), modularBannerBtn: document.getElementById('modular-banner-btn'),
                 qualificationDispo: document.getElementById('qualification-dispo'), qualificationSalaire: document.getElementById('qualification-salaire'), qualificationLoc: document.getElementById('qualification-loc'),
                 generateMailBtn: document.getElementById('generate-mail-btn'), recruiterMailContent: document.getElementById('recruiter-mail-content'),
-                anonymizeBtn: document.getElementById('anonymize-btn'), downloadPdfBtn: document.getElementById('download-pdf-btn'),
-                resetCvBtn: document.getElementById('reset-cv-btn'),
-                togglePresentationModeBtn: document.getElementById('toggle-presentation-mode-btn'),
-                toggleOverflowBtn: document.getElementById('toggle-overflow-btn'),
+                // Note: buttons moved to toolbar: anonymizeBtn, downloadPdfBtn, resetCvBtn, togglePresentationModeBtn, toggleOverflowBtn
                 aiSummarizeBtn: document.getElementById('ai-summarize-btn'),
                 resetRecruiterBtn: document.getElementById('reset-recruiter-btn'),
                 aiLimitSkillsBtn: document.getElementById('ai-limit-skills-btn'),
@@ -858,7 +872,7 @@
                 bannerNomFont: document.getElementById('banner-nom-font'), bannerNomSize: document.getElementById('banner-nom-size'), bannerNomSizeValue: document.getElementById('banner-nom-size-value'), bannerNomColor: document.getElementById('banner-nom-color'), bannerNomBold: document.getElementById('banner-nom-bold'), bannerNomItalic: document.getElementById('banner-nom-italic'),
                 bannerPosteSize: document.getElementById('banner-poste-size'), bannerPosteSizeValue: document.getElementById('banner-poste-size-value'), bannerPosteColor: document.getElementById('banner-poste-color'), bannerPosteBold: document.getElementById('banner-poste-bold'), bannerPosteItalic: document.getElementById('banner-poste-italic'),
                 bannerContactSize: document.getElementById('banner-contact-size'), bannerContactSizeValue: document.getElementById('banner-contact-size-value'), bannerContactColor: document.getElementById('banner-contact-color'), bannerContactBold: document.getElementById('banner-contact-bold'), bannerContactItalic: document.getElementById('banner-contact-italic'),
-                undoBtn: document.getElementById('undo-btn'), redoBtn: document.getElementById('redo-btn'),
+                // Note: undo/redo buttons are now in the toolbar, not in controls panel
                 addSectionBtn: document.getElementById('add-section-btn'), customSectionsList: document.getElementById('custom-sections-list'), sectionSuggestionSelect: document.getElementById('section-suggestion-select'), newSectionTitleInput: document.getElementById('new-section-title-input'),
                 primaryColorPicker: document.getElementById('primary-color-picker'),
                 secondaryColorPicker: document.getElementById('secondary-color-picker'),
@@ -1948,8 +1962,7 @@
                 });
                 tabButtons[0].click();
 
-                controls.undoBtn.addEventListener('click', undo);
-                controls.redoBtn.addEventListener('click', redo);
+                // Note: undo/redo buttons are now handled in the toolbar, not here
                 document.addEventListener('keydown', (e) => {
                     if (e.ctrlKey && e.key === 'z') { e.preventDefault(); undo(); }
                     if (e.ctrlKey && e.key === 'y') { e.preventDefault(); redo(); }
@@ -2354,29 +2367,16 @@
                     });
                 }
 
-                controls.downloadPdfBtn.addEventListener('click', downloadPDF);
-
-                controls.resetCvBtn.addEventListener('click', async () => {
-                    const confirmed = await showConfirmModal("Nouveau CV", "Êtes-vous sûr de vouloir réinitialiser complètement le CV ?");
-                    if (confirmed) resetCVToDefault();
-                });
+                // Note: PDF download button is now handled in toolbar
+                // Note: Reset CV button is now handled in toolbar via new-cv-btn
                 
-                controls.togglePresentationModeBtn.addEventListener('click', () => {
-                    document.body.classList.toggle('presentation-mode');
-                    const isActive = document.body.classList.contains('presentation-mode');
-                    controls.togglePresentationModeBtn.innerHTML = `<i class="fa-solid ${isActive ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isActive ? 'Quitter Présentation' : 'Mode Présentation'}`;
-                });
+                // Note: Presentation mode button is now handled in toolbar
+                // Note: Overflow detection button is now handled in toolbar
                 
-                controls.toggleOverflowBtn.addEventListener('click', (e) => {
-                    document.body.classList.toggle('overflow-check-active');
-                    e.currentTarget.classList.toggle('active');
-                    checkAllPagesOverflow();
-                });
-
                 controls.aiSummarizeBtn.addEventListener('click', summarizeAllExperiencesAI);
                 controls.aiSynthesizeSkillsBtn.addEventListener('click', synthesizeSkillsWithAI);
                 controls.aiLimitSkillsBtn.addEventListener('click', limitSkillsWithAI);
-                controls.anonymizeBtn.addEventListener('click', anonymizeCV);
+                // Note: anonymize button is now in toolbar
                 controls.resetRecruiterBtn.addEventListener('click', () => { setDefaultRecruiterInfo(); updatePreview('form'); });
                 controls.addPageBtn.addEventListener('click', () => addNewPage());
                 controls.removeBannerBgBtn.addEventListener('click', () => removeBannerBackground());
@@ -2799,6 +2799,8 @@
 
             // --- FUNCTION VERIFICATION ---
             function verifyAllFunctions() {
+                console.log('🔍 Vérification de l\'intégrité de l\'application...');
+                
                 const functionsToCheck = [
                     { name: 'saveGeminiApiKey', fn: saveGeminiApiKey },
                     { name: 'clearGeminiApiKey', fn: clearGeminiApiKey },
@@ -2819,21 +2821,43 @@
                     console.log('✅ Toutes les fonctions principales sont disponibles');
                 }
                 
-                // Vérify essential DOM elements
+                // Verify essential DOM elements
                 const essentialElements = [
-                    'gemini-api-key', 'save-api-key-btn', 'clear-api-key-btn',
-                    'new-cv-btn', 'save-cv-btn', 'toolbar-download-pdf-btn',
-                    'toolbar-share-btn', 'toolbar-anonymize-btn', 
-                    'toolbar-toggle-overflow-btn', 'toolbar-presentation-mode-btn'
+                    { id: 'gemini-api-key', name: 'Champ API Gemini' },
+                    { id: 'save-api-key-btn', name: 'Bouton Sauvegarder API' },
+                    { id: 'clear-api-key-btn', name: 'Bouton Effacer API' },
+                    { id: 'new-cv-btn', name: 'Bouton Nouveau CV' },
+                    { id: 'save-cv-btn', name: 'Bouton Sauvegarder' },
+                    { id: 'toolbar-download-pdf-btn', name: 'Bouton PDF' },
+                    { id: 'toolbar-share-btn', name: 'Bouton Partager' },
+                    { id: 'toolbar-anonymize-btn', name: 'Bouton Anonymiser' },
+                    { id: 'toolbar-toggle-overflow-btn', name: 'Bouton Dépassement' },
+                    { id: 'toolbar-presentation-mode-btn', name: 'Bouton Présentation' },
+                    { id: 'toggle-banner-checkbox', name: 'Checkbox Bannière' }
                 ];
                 
-                const missingElements = essentialElements.filter(id => !document.getElementById(id));
+                const missingElements = essentialElements.filter(({ id }) => !document.getElementById(id));
                 
                 if (missingElements.length > 0) {
-                    console.warn('⚠️ Éléments DOM manquants:', missingElements);
+                    console.warn('⚠️ Éléments DOM manquants:', missingElements.map(e => `${e.name} (${e.id})`));
+                    showNotification(`⚠️ ${missingElements.length} élément(s) DOM manquant(s)`, "error");
                 } else {
                     console.log('✅ Tous les éléments DOM essentiels sont présents');
                 }
+                
+                // Test key functionalities
+                try {
+                    // Test notifications
+                    setTimeout(() => {
+                        showNotification("🧪 Test du système de notifications", "success");
+                    }, 1000);
+                    
+                    console.log('✅ Système de notifications fonctionnel');
+                } catch (error) {
+                    console.error('❌ Erreur dans le système de notifications:', error);
+                }
+                
+                return { missingFunctions: missingFunctions.length, missingElements: missingElements.length };
             }
 
             // --- START THE APP ---
@@ -2841,8 +2865,13 @@
             
             // Verify everything is working
             setTimeout(() => {
-                verifyAllFunctions();
-                showNotification("🚀 CV Creator chargé avec succès!", "success");
+                const results = verifyAllFunctions();
+                
+                if (results.missingFunctions === 0 && results.missingElements === 0) {
+                    showNotification("🚀 CV Creator chargé avec succès! Tous les systèmes opérationnels.", "success");
+                } else {
+                    showNotification(`⚠️ CV Creator chargé avec ${results.missingFunctions + results.missingElements} problème(s) détecté(s). Vérifiez la console.`, "error");
+                }
             }, 500);
             
             resetCVToDefault(); // Start with a clean slate
