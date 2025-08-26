@@ -942,23 +942,13 @@
         </div>
 
         <!-- PREVIEW PANEL -->
-                        <div class="control-group-content space-y-3">
-                            <p class="text-sm font-medium">Style de Présentation</p>
-                            <div class="flex gap-2">
-                                <button data-skill-style="tags" class="skill-style-btn flex-1 bg-gray-200 p-2 rounded-md text-sm active">Tags</button>
-                                <button data-skill-style="levels" class="skill-style-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">Niveaux</button>
-                                <button data-skill-style="simple" class="skill-style-btn flex-1 bg-gray-200 p-2 rounded-md text-sm">Simple</button>
-                            </div>
-                            
-                            <div id="skills-text-controls">
-                                <div class="flex justify-between items-center"><label for="competences" class="font-medium">Liste des compétences</label><div class="flex gap-2"><button id="ai-limit-skills-btn" class="text-blue-600 hover:text-blue-800" title="Limiter à 10 compétences par l'IA"><i class="fas fa-filter"></i> 10</button><button id="ai-synthesize-skills-btn" class="text-blue-600 hover:text-blue-800" title="Synthétiser et ranger les compétences par l'IA"><i class="fas fa-brain"></i></button></div></div>
-                                <textarea id="competences" placeholder="Compétences (séparées par des virgules)..." rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
-                            </div>
-
-                            <div id="skills-level-controls" class="hidden space-y-3">
-                                <p class="text-sm font-medium">Style de Jauge</p>
-                                <div class="grid grid-cols-5 gap-2 text-center">
-                                    <button data-gauge-style="bar" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm active" title="Barre"><i class="fas fa-bars"></i></button>
+        <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex justify-center items-start overflow-auto" id="preview-area">
+            <div id="cv-preview-wrapper">
+                <div class="a4-page-container">
+                    <div id="page-1" class="a4-page">
+                        <div id="fixed-banner-top"></div>
+                        <div class="cv-body-container layout-1-col">
+                            <div id="cv-col-1-1" class="cv-column">
                                     <button data-gauge-style="dots" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Points"><i class="fas fa-circle"></i></button>
                                     <button data-gauge-style="stars" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Étoiles"><i class="fas fa-star"></i></button>
                                     <button data-gauge-style="squares" class="gauge-style-btn bg-gray-200 p-2 rounded-md text-sm" title="Carrés"><i class="fas fa-square"></i></button>
@@ -1120,14 +1110,9 @@
             </div>
 
         </div>
+    </div>
 
-        <!-- PREVIEW PANEL -->
-        <div class="w-full lg:w-2/3 xl:w-3/4 p-8 bg-gray-200 flex justify-center items-start overflow-auto" id="preview-area">
-            <div id="cv-preview-wrapper">
-                <div class="a4-page-container">
-                    <div id="page-1" class="a4-page">
-                        <div id="fixed-banner-top"></div>
-                        <div class="cv-body-container layout-1-col">
+    <!-- FOOTER ACTIONS -->
                             <div id="cv-col-1-1" class="cv-column">
                                 <div id="banner-module" class="cv-module">
                                     <div class="drag-handle"><i class="fas fa-grip-vertical"></i></div>
