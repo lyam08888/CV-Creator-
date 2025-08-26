@@ -197,6 +197,46 @@
         .editable-wrapper .delete-line-btn { display: none; position: absolute; top: 50%; right: 2px; transform: translateY(-50%); cursor: pointer; color: #ef4444; background-color: white; border-radius: 50%; width: 18px; height: 18px; text-align: center; line-height: 18px; font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 5; }
         .editable-wrapper:hover .delete-line-btn { display: flex; align-items: center; justify-content: center; }
         .history-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        
+        /* Barre d'outils principale */
+        #main-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        #main-toolbar button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        #main-toolbar input[type="password"] {
+            transition: all 0.2s ease;
+        }
+        
+        #main-toolbar input[type="password"]:focus {
+            transform: scale(1.02);
+        }
+        
+        /* Animation des boutons actifs dans la toolbar */
+        #main-toolbar .active {
+            background-color: #1d4ed8 !important;
+            box-shadow: 0 0 10px rgba(29, 78, 216, 0.5);
+        }
+        
+        /* Responsive pour la toolbar */
+        @media (max-width: 768px) {
+            #main-toolbar .max-w-7xl {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            #main-toolbar .flex:last-child {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
         .insert-line-wrapper { position: relative; height: 0.5rem; opacity: 0; transition: opacity 0.2s; margin: 0; display: flex; justify-content: center; align-items: center; }
         .dynamic-item-container:hover .insert-line-wrapper { opacity: 1; }
         .add-line-preview-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #eef2ff; color: #4f46e5; border: 1px dashed #a5b4fc; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; }
@@ -332,16 +372,91 @@
     <div id="notification"></div>
     <button id="ai-summarize-btn" title="Synthèse IA des expériences (5 lignes max)" class="no-print"><i class="fas fa-compress-arrows-alt"></i></button>
 
+    <!-- Barre d'outils principale en haut -->
+    <div id="main-toolbar" class="bg-white shadow-lg border-b border-gray-200 p-4 no-print">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <!-- Logo et titre -->
+            <div class="flex items-center gap-3">
+                <i class="fas fa-magic-wand-sparkles text-2xl text-blue-600"></i>
+                <h1 class="text-xl font-bold text-gray-800">CV Creator</h1>
+                <span id="save-status" class="text-xs text-green-600 opacity-0 transition-opacity duration-300">
+                    <i class="fas fa-check-circle"></i> Sauvegardé
+                </span>
+            </div>
+            
+            <!-- Actions principales -->
+            <div class="flex items-center gap-3 flex-wrap">
+                <!-- API Gemini Configuration -->
+                <div class="flex items-center gap-2">
+                    <input type="password" id="gemini-api-key" placeholder="Clé API Gemini" 
+                           class="px-3 py-2 text-sm border rounded-md w-40 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="save-api-key-btn" title="Enregistrer la clé API" 
+                            class="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 flex items-center gap-1">
+                        <i class="fas fa-key"></i> Enregistrer
+                    </button>
+                </div>
+                
+                <!-- Séparateur -->
+                <div class="h-6 border-l border-gray-300"></div>
+                
+                <!-- Actions de fichier -->
+                <button id="new-cv-btn" title="Nouveau CV" 
+                        class="px-3 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 flex items-center gap-2">
+                    <i class="fas fa-file-circle-plus"></i> Nouveau CV
+                </button>
+                
+                <button id="save-cv-btn" title="Enregistrer le CV" 
+                        class="px-3 py-2 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700 flex items-center gap-2">
+                    <i class="fas fa-save"></i> Enregistrer
+                </button>
+                
+                <button id="toolbar-download-pdf-btn" title="Télécharger en PDF" 
+                        class="px-3 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-900 flex items-center gap-2">
+                    <i class="fas fa-download"></i> PDF
+                </button>
+                
+                <button id="toolbar-share-btn" title="Partager le CV" 
+                        class="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 flex items-center gap-2">
+                    <i class="fas fa-share-alt"></i> Partager
+                </button>
+                
+                <!-- Séparateur -->
+                <div class="h-6 border-l border-gray-300"></div>
+                
+                <!-- Actions d'anonymisation et présentation -->
+                <button id="toolbar-anonymize-btn" title="Anonymiser le CV" 
+                        class="px-3 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700 flex items-center gap-2">
+                    <i class="fas fa-user-secret"></i> Anonymiser
+                </button>
+                
+                <button id="toolbar-toggle-overflow-btn" title="Détection de dépassement" 
+                        class="px-3 py-2 bg-yellow-500 text-white text-sm rounded-md hover:bg-yellow-600 flex items-center gap-2">
+                    <i class="fas fa-ruler-combined"></i> Dépassement
+                </button>
+                
+                <button id="toolbar-presentation-mode-btn" title="Mode présentation" 
+                        class="px-3 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 flex items-center gap-2">
+                    <i class="fas fa-eye"></i> Présentation
+                </button>
+                
+                <!-- Historique -->
+                <div class="flex items-center gap-1">
+                    <button id="toolbar-undo-btn" class="history-btn p-2 text-gray-600 hover:text-gray-900 disabled:text-gray-300" title="Annuler (Ctrl+Z)">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button id="toolbar-redo-btn" class="history-btn p-2 text-gray-600 hover:text-gray-900 disabled:text-gray-300" title="Rétablir (Ctrl+Y)">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="flex flex-col lg:flex-row min-h-screen">
         <!-- CONTROLS PANEL -->
         <div id="controls" class="w-full lg:w-1/3 xl:w-1/4 p-6 bg-white shadow-2xl overflow-y-auto flex flex-col no-print">
             <div class="flex justify-between items-center mb-4 flex-shrink-0">
-                <div class="flex items-center gap-3"><i class="fas fa-magic-wand-sparkles text-3xl text-blue-600"></i><h1 class="text-2xl font-bold text-gray-800">Créateur de CV</h1></div>
-                <div class="flex items-center gap-2">
-                    <!-- Save status removed -->
-                    <button id="undo-btn" class="history-btn text-xl text-gray-600 hover:text-gray-900 disabled:text-gray-300" title="Annuler (Ctrl+Z)"><i class="fas fa-undo"></i></button>
-                    <button id="redo-btn" class="history-btn text-xl text-gray-600 hover:text-gray-900 disabled:text-gray-300" title="Rétablir (Ctrl+Y)"><i class="fas fa-redo"></i></button>
-                </div>
+                <div class="flex items-center gap-3"><i class="fas fa-cogs text-2xl text-blue-600"></i><h2 class="text-xl font-bold text-gray-800">Panneau de contrôle</h2></div>
             </div>
             
             <!-- NEW: Progress Bar -->
@@ -351,18 +466,6 @@
                     <div id="progress-bar" class="bg-green-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                 </div>
                 <p id="progress-text" class="text-xs text-right text-gray-500 mt-1">0/X sections complétées</p>
-            </div>
-
-            <!-- Actions Rapides -->
-            <div class="space-y-2 mb-4 p-4 bg-slate-50 rounded-lg border border-slate-200 flex-shrink-0">
-                 <div class="grid grid-cols-2 gap-2">
-                      <button id="download-pdf-btn" class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-900 flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> PDF</button>
-                      <button id="share-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fa-solid fa-share-alt"></i> Partager</button>
-                 </div>
-                 <button id="anonymize-btn" class="w-full bg-slate-500 text-white py-2 px-4 rounded-md hover:bg-slate-600 flex items-center justify-center gap-2"><i class="fa-solid fa-user-secret"></i>Anonymiser le CV</button>
-                 <button id="reset-cv-btn" class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 flex items-center justify-center gap-2"><i class="fa-solid fa-file-circle-plus"></i> Nouveau CV</button>
-                 <button id="toggle-overflow-btn" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 flex items-center justify-center gap-2"><i class="fa-solid fa-ruler-combined"></i> Détection Dépassement</button>
-                 <button id="toggle-presentation-mode-btn" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-eye"></i> Mode Présentation</button>
             </div>
 
 
@@ -2116,7 +2219,8 @@
                     }
                 });
 
-                controls.downloadPdfBtn.addEventListener('click', async () => {
+                // --- PDF DOWNLOAD FUNCTION ---
+                async function downloadPDF() {
                     const filename = `CV_${controls.prenom.value}_${controls.nom.value}.pdf`.replace(/ /g, '_');
                     document.body.classList.add('presentation-mode');
 
@@ -2192,7 +2296,9 @@
                         bannerBg.style.cssText = originalBannerBg.style;
                         document.body.classList.remove('presentation-mode');
                     });
-                });
+                }
+
+                controls.downloadPdfBtn.addEventListener('click', downloadPDF);
 
                 controls.resetCvBtn.addEventListener('click', async () => {
                     const confirmed = await showConfirmModal("Nouveau CV", "Êtes-vous sûr de vouloir réinitialiser complètement le CV ?");
@@ -2236,8 +2342,328 @@
                 controls.addSkillLevelBtn.addEventListener('click', () => createSkillLevelItem());
 
                 document.querySelectorAll('.a4-page').forEach(setupOverflowObserver);
+                
+                // Initialize new toolbar and features
+                initializeToolbarButtons();
+                setupAutoSave();
+                
+                // Try to load saved CV data
+                setTimeout(() => {
+                    const hasData = loadCVData();
+                    if (!hasData) {
+                        console.log("No saved data found, starting with fresh CV");
+                    }
+                }, 100);
             }
             
+            // --- API GEMINI MANAGEMENT ---
+            let geminiApiKey = localStorage.getItem('gemini-api-key') || '';
+            
+            function saveGeminiApiKey() {
+                const keyInput = document.getElementById('gemini-api-key');
+                const key = keyInput.value.trim();
+                
+                if (!key) {
+                    showNotification("Veuillez entrer une clé API Gemini valide.", "error");
+                    return;
+                }
+                
+                localStorage.setItem('gemini-api-key', key);
+                geminiApiKey = key;
+                showNotification("Clé API Gemini enregistrée avec succès!", "success");
+                keyInput.type = 'password';
+                keyInput.value = '●'.repeat(Math.min(key.length, 20));
+            }
+            
+            function loadSavedApiKey() {
+                const keyInput = document.getElementById('gemini-api-key');
+                if (geminiApiKey) {
+                    keyInput.value = '●'.repeat(Math.min(geminiApiKey.length, 20));
+                }
+            }
+            
+            // --- CV SAVE/LOAD FUNCTIONALITY ---
+            function showSaveStatus() {
+                const saveStatus = document.getElementById('save-status');
+                saveStatus.style.opacity = '1';
+                setTimeout(() => {
+                    saveStatus.style.opacity = '0';
+                }, 2000);
+            }
+            
+            function saveCVData() {
+                const cvData = {
+                    timestamp: new Date().toISOString(),
+                    nom: controls.nom.value,
+                    prenom: controls.prenom.value,
+                    poste: controls.poste.value,
+                    description: controls.description.value,
+                    competences: controls.competences.value,
+                    experiences: getDynamicData(controls.experienceList),
+                    formations: getDynamicData(controls.formationList),
+                    banner: {
+                        nom: controls.bannerNom.value,
+                        poste: controls.bannerPoste.value,
+                        email: controls.bannerEmail.value,
+                        tel: controls.bannerTel.value,
+                    },
+                    qualifications: {
+                        dispo: controls.qualificationDispo.value,
+                        salaire: controls.qualificationSalaire.value,
+                        location: controls.qualificationLoc.value
+                    },
+                    customSections: getCustomSectionsData(),
+                    styles: getCurrentStyles()
+                };
+                
+                localStorage.setItem('cv-data', JSON.stringify(cvData));
+                showNotification("CV enregistré avec succès!", "success");
+                showSaveStatus();
+            }
+            
+            function loadCVData() {
+                const saved = localStorage.getItem('cv-data');
+                if (!saved) {
+                    showNotification("Aucune sauvegarde trouvée.", "error");
+                    return false;
+                }
+                
+                try {
+                    const cvData = JSON.parse(saved);
+                    
+                    // Restore basic info
+                    controls.nom.value = cvData.nom || '';
+                    controls.prenom.value = cvData.prenom || '';
+                    controls.poste.value = cvData.poste || '';
+                    controls.description.value = cvData.description || '';
+                    controls.competences.value = cvData.competences || '';
+                    
+                    // Restore experiences
+                    controls.experienceList.innerHTML = '';
+                    (cvData.experiences || []).forEach(exp => 
+                        createDynamicItem(controls.experienceList, 
+                            [{ key: 'title', placeholder: 'Titre du poste' }, 
+                             { key: 'meta', placeholder: 'Entreprise & Dates' }, 
+                             { key: 'desc', placeholder: 'Description', type: 'textarea' }], exp));
+                    
+                    // Restore formations
+                    controls.formationList.innerHTML = '';
+                    (cvData.formations || []).forEach(form => 
+                        createDynamicItem(controls.formationList, 
+                            [{ key: 'title', placeholder: 'Nom du diplôme' }, 
+                             { key: 'meta', placeholder: 'Établissement & Année' }], form));
+                    
+                    // Restore banner
+                    if (cvData.banner) {
+                        controls.bannerNom.value = cvData.banner.nom || '';
+                        controls.bannerPoste.value = cvData.banner.poste || '';
+                        controls.bannerEmail.value = cvData.banner.email || '';
+                        controls.bannerTel.value = cvData.banner.tel || '';
+                    }
+                    
+                    // Restore qualifications
+                    if (cvData.qualifications) {
+                        controls.qualificationDispo.value = cvData.qualifications.dispo || '';
+                        controls.qualificationSalaire.value = cvData.qualifications.salaire || '';
+                        controls.qualificationLoc.value = cvData.qualifications.location || '';
+                    }
+                    
+                    updatePreview('form');
+                    showNotification("CV chargé avec succès!", "success");
+                    return true;
+                } catch (error) {
+                    showNotification("Erreur lors du chargement du CV.", "error");
+                    return false;
+                }
+            }
+            
+            function getCustomSectionsData() {
+                // Placeholder for custom sections data
+                return [];
+            }
+            
+            function getCurrentStyles() {
+                return {
+                    primaryColor: controls.primaryColorPicker.value,
+                    secondaryColor: controls.secondaryColorPicker.value,
+                    bodyTextColor: controls.bodyTextColorPicker.value
+                };
+            }
+            
+            // --- TOOLBAR BUTTON HANDLERS ---
+            function initializeToolbarButtons() {
+                // API Key management
+                document.getElementById('save-api-key-btn').addEventListener('click', saveGeminiApiKey);
+                document.getElementById('gemini-api-key').addEventListener('focus', function() {
+                    if (this.value.includes('●')) {
+                        this.type = 'text';
+                        this.value = geminiApiKey;
+                    }
+                });
+                
+                // File operations
+                document.getElementById('new-cv-btn').addEventListener('click', async () => {
+                    const confirmed = await showConfirmModal("Nouveau CV", "Êtes-vous sûr de vouloir créer un nouveau CV ? Les données non sauvegardées seront perdues.");
+                    if (confirmed) {
+                        resetCVToDefault();
+                        showNotification("Nouveau CV créé!", "success");
+                    }
+                });
+                
+                document.getElementById('save-cv-btn').addEventListener('click', saveCVData);
+                
+                // PDF Download - use the existing function
+                document.getElementById('toolbar-download-pdf-btn').addEventListener('click', downloadPDF);
+                
+                // Share - use existing share functionality
+                document.getElementById('toolbar-share-btn').addEventListener('click', () => {
+                    controls.shareBtn.click();
+                });
+                
+                // Anonymize - use existing anonymize functionality
+                document.getElementById('toolbar-anonymize-btn').addEventListener('click', () => {
+                    anonymizeCV();
+                });
+                
+                // Overflow detection - use existing functionality
+                document.getElementById('toolbar-toggle-overflow-btn').addEventListener('click', (e) => {
+                    document.body.classList.toggle('overflow-check-active');
+                    e.currentTarget.classList.toggle('active', document.body.classList.contains('overflow-check-active'));
+                    checkAllPagesOverflow();
+                });
+                
+                // Presentation mode - use existing functionality
+                document.getElementById('toolbar-presentation-mode-btn').addEventListener('click', (e) => {
+                    document.body.classList.toggle('presentation-mode');
+                    const isActive = document.body.classList.contains('presentation-mode');
+                    e.currentTarget.classList.toggle('active', isActive);
+                    e.currentTarget.innerHTML = `<i class="fas ${isActive ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isActive ? 'Quitter' : 'Présentation'}`;
+                });
+                
+                // History buttons - use existing functions
+                document.getElementById('toolbar-undo-btn').addEventListener('click', undo);
+                document.getElementById('toolbar-redo-btn').addEventListener('click', redo);
+                
+                // Load saved API key on startup
+                loadSavedApiKey();
+            }
+            
+            // --- AUTO-SAVE FUNCTIONALITY ---
+            let autoSaveTimeout;
+            
+            function setupAutoSave() {
+                const autoSave = () => {
+                    clearTimeout(autoSaveTimeout);
+                    autoSaveTimeout = setTimeout(() => {
+                        // Auto-save silently without notification
+                        const cvData = {
+                            timestamp: new Date().toISOString(),
+                            nom: controls.nom.value,
+                            prenom: controls.prenom.value,
+                            poste: controls.poste.value,
+                            description: controls.description.value,
+                            competences: controls.competences.value,
+                            experiences: getDynamicData(controls.experienceList),
+                            formations: getDynamicData(controls.formationList),
+                            banner: {
+                                nom: controls.bannerNom.value,
+                                poste: controls.bannerPoste.value,
+                                email: controls.bannerEmail.value,
+                                tel: controls.bannerTel.value,
+                            },
+                            qualifications: {
+                                dispo: controls.qualificationDispo.value,
+                                salaire: controls.qualificationSalaire.value,
+                                location: controls.qualificationLoc.value
+                            },
+                            customSections: getCustomSectionsData(),
+                            styles: getCurrentStyles()
+                        };
+                        
+                        localStorage.setItem('cv-data', JSON.stringify(cvData));
+                        showSaveStatus();
+                    }, 3000); // Auto-save after 3 seconds of inactivity
+                };
+                
+                // Monitor form changes for auto-save
+                document.addEventListener('input', autoSave);
+                document.addEventListener('blur', autoSave, true);
+                
+                // Setup keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl+S to save
+                    if (e.ctrlKey && e.key === 's') {
+                        e.preventDefault();
+                        saveCVData();
+                    }
+                    
+                    // Ctrl+P to download PDF
+                    if (e.ctrlKey && e.key === 'p') {
+                        e.preventDefault();
+                        downloadPDF();
+                    }
+                    
+                    // Ctrl+N for new CV
+                    if (e.ctrlKey && e.key === 'n') {
+                        e.preventDefault();
+                        document.getElementById('new-cv-btn').click();
+                    }
+                    
+                    // F11 for presentation mode
+                    if (e.key === 'F11') {
+                        e.preventDefault();
+                        document.getElementById('toolbar-presentation-mode-btn').click();
+                    }
+                });
+            }
+            
+            // --- ENHANCED GEMINI API FUNCTION ---
+            async function callGeminiAPI(prompt, schema = null) {
+                if (!geminiApiKey) {
+                    showNotification("Veuillez configurer votre clé API Gemini dans la barre d'outils.", "error");
+                    return null;
+                }
+                
+                showLoader("Traitement par l'IA...");
+                
+                try {
+                    const requestBody = {
+                        contents: [{ parts: [{ text: prompt }] }],
+                        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+                    };
+                    
+                    if (schema) {
+                        requestBody.generationConfig.responseMimeType = "application/json";
+                        requestBody.generationConfig.responseSchema = schema;
+                    }
+                    
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(requestBody)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    
+                    if (!text) {
+                        throw new Error("Réponse vide de l'API");
+                    }
+                    
+                    return schema ? JSON.parse(text) : text;
+                } catch (error) {
+                    console.error('Gemini API Error:', error);
+                    showNotification(`Erreur IA: ${error.message}`, "error");
+                    return null;
+                } finally {
+                    hideLoader();
+                }
+            }
+
             // --- START THE APP ---
             initializeAll();
             resetCVToDefault(); // Start with a clean slate
