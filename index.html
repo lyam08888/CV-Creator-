@@ -226,6 +226,28 @@
             box-shadow: 0 0 10px rgba(29, 78, 216, 0.5);
         }
         
+        /* Style pour input API désactivé */
+        #gemini-api-key:disabled {
+            background-color: #f3f4f6 !important;
+            cursor: not-allowed;
+            color: #6b7280;
+        }
+        
+        /* Amélioration des tooltips */
+        [title] {
+            position: relative;
+        }
+        
+        /* Animation de hover améliorée */
+        #main-toolbar button:not(:disabled):hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        #main-toolbar button:active {
+            transform: translateY(0);
+        }
+        
         /* Responsive pour la toolbar */
         @media (max-width: 768px) {
             #main-toolbar .max-w-7xl {
@@ -388,10 +410,16 @@
             <div class="flex items-center gap-3 flex-wrap">
                 <!-- API Gemini Configuration -->
                 <div class="flex items-center gap-2">
-                    <input type="password" id="gemini-api-key" placeholder="Clé API Gemini" 
-                           class="px-3 py-2 text-sm border rounded-md w-40 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <button id="save-api-key-btn" title="Enregistrer la clé API" 
-                            class="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 flex items-center gap-1">
+                    <div class="relative">
+                        <input type="password" id="gemini-api-key" placeholder="Clé API Gemini" 
+                               class="px-3 py-2 text-sm border rounded-md w-40 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="clear-api-key-btn" title="Effacer la clé API" 
+                                class="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 text-xs hidden">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <button id="save-api-key-btn" title="Enregistrer la clé API Gemini pour utiliser les fonctionnalités IA" 
+                            class="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 flex items-center gap-1 transition-all duration-200">
                         <i class="fas fa-key"></i> Enregistrer
                     </button>
                 </div>
@@ -400,23 +428,23 @@
                 <div class="h-6 border-l border-gray-300"></div>
                 
                 <!-- Actions de fichier -->
-                <button id="new-cv-btn" title="Nouveau CV" 
-                        class="px-3 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 flex items-center gap-2">
+                <button id="new-cv-btn" title="Créer un nouveau CV vierge (Ctrl+N)" 
+                        class="px-3 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-file-circle-plus"></i> Nouveau CV
                 </button>
                 
-                <button id="save-cv-btn" title="Enregistrer le CV" 
-                        class="px-3 py-2 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700 flex items-center gap-2">
+                <button id="save-cv-btn" title="Sauvegarder le CV actuel dans le navigateur (Ctrl+S)" 
+                        class="px-3 py-2 bg-purple-600 text-white text-sm rounded-md hover:bg-purple-700 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-save"></i> Enregistrer
                 </button>
                 
-                <button id="toolbar-download-pdf-btn" title="Télécharger en PDF" 
-                        class="px-3 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-900 flex items-center gap-2">
+                <button id="toolbar-download-pdf-btn" title="Télécharger le CV au format PDF (Ctrl+P)" 
+                        class="px-3 py-2 bg-gray-800 text-white text-sm rounded-md hover:bg-gray-900 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-download"></i> PDF
                 </button>
                 
-                <button id="toolbar-share-btn" title="Partager le CV" 
-                        class="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 flex items-center gap-2">
+                <button id="toolbar-share-btn" title="Générer un lien de partage du CV" 
+                        class="px-3 py-2 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-share-alt"></i> Partager
                 </button>
                 
@@ -424,27 +452,27 @@
                 <div class="h-6 border-l border-gray-300"></div>
                 
                 <!-- Actions d'anonymisation et présentation -->
-                <button id="toolbar-anonymize-btn" title="Anonymiser le CV" 
-                        class="px-3 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700 flex items-center gap-2">
+                <button id="toolbar-anonymize-btn" title="Remplacer les informations personnelles par des données anonymes" 
+                        class="px-3 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-user-secret"></i> Anonymiser
                 </button>
                 
-                <button id="toolbar-toggle-overflow-btn" title="Détection de dépassement" 
-                        class="px-3 py-2 bg-yellow-500 text-white text-sm rounded-md hover:bg-yellow-600 flex items-center gap-2">
+                <button id="toolbar-toggle-overflow-btn" title="Activer/désactiver la détection visuelle des dépassements de page" 
+                        class="px-3 py-2 bg-yellow-500 text-white text-sm rounded-md hover:bg-yellow-600 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-ruler-combined"></i> Dépassement
                 </button>
                 
-                <button id="toolbar-presentation-mode-btn" title="Mode présentation" 
-                        class="px-3 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 flex items-center gap-2">
+                <button id="toolbar-presentation-mode-btn" title="Mode présentation - masque les outils d'édition (F11)" 
+                        class="px-3 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 flex items-center gap-2 transition-all duration-200">
                     <i class="fas fa-eye"></i> Présentation
                 </button>
                 
                 <!-- Historique -->
                 <div class="flex items-center gap-1">
-                    <button id="toolbar-undo-btn" class="history-btn p-2 text-gray-600 hover:text-gray-900 disabled:text-gray-300" title="Annuler (Ctrl+Z)">
+                    <button id="toolbar-undo-btn" class="history-btn p-2 text-gray-600 hover:text-gray-900 disabled:text-gray-300 transition-all duration-200" title="Annuler la dernière action (Ctrl+Z)">
                         <i class="fas fa-undo"></i>
                     </button>
-                    <button id="toolbar-redo-btn" class="history-btn p-2 text-gray-600 hover:text-gray-900 disabled:text-gray-300" title="Rétablir (Ctrl+Y)">
+                    <button id="toolbar-redo-btn" class="history-btn p-2 text-gray-600 hover:text-gray-900 disabled:text-gray-300 transition-all duration-200" title="Rétablir la dernière action annulée (Ctrl+Y)">
                         <i class="fas fa-redo"></i>
                     </button>
                 </div>
@@ -1654,6 +1682,14 @@
                     else if (input.type !== 'range' && input.type !== 'color') input.value = '';
                 });
                 
+                // Hide banner by default
+                const bannerModule = document.getElementById('banner-module');
+                const toggleBannerCheckbox = document.getElementById('toggle-banner-checkbox');
+                if (bannerModule && toggleBannerCheckbox) {
+                    toggleBannerCheckbox.checked = false;
+                    bannerModule.style.display = 'none';
+                }
+                
                 controls.experienceList.innerHTML = '';
                 controls.formationList.innerHTML = '';
                 controls.customSectionsList.innerHTML = '';
@@ -1753,13 +1789,18 @@
             }
 
             function anonymizeCV() {
+                const toolbarAnonymizeBtn = document.getElementById('toolbar-anonymize-btn');
+                
                 if (isAnonymized) {
                     controls.nom.value = originalData.nom;
                     controls.prenom.value = originalData.prenom;
                     
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-secret"></i> Anonymiser le CV';
+                    if (toolbarAnonymizeBtn) {
+                        toolbarAnonymizeBtn.innerHTML = '<i class="fas fa-user-secret"></i> Anonymiser';
+                        toolbarAnonymizeBtn.classList.remove('active');
+                    }
                     isAnonymized = false;
-                    showNotification("CV désanonymisé.", "success");
+                    showNotification("✅ CV désanonymisé - informations restaurées", "success");
                 } else {
                     originalData = {
                         nom: controls.nom.value,
@@ -1770,9 +1811,12 @@
                     controls.nom.value = firstLetter;
                     controls.prenom.value = originalData.prenom;
                     
-                    controls.anonymizeBtn.innerHTML = '<i class="fa-solid fa-user-check"></i> Désanonymiser le CV';
+                    if (toolbarAnonymizeBtn) {
+                        toolbarAnonymizeBtn.innerHTML = '<i class="fas fa-user-check"></i> Désanonymiser';
+                        toolbarAnonymizeBtn.classList.add('active');
+                    }
                     isAnonymized = true;
-                    showNotification("CV anonymisé.", "success");
+                    showNotification("🕵️ CV anonymisé - données sensibles masquées", "success");
                 }
                 updatePreview('form');
             }
@@ -1936,6 +1980,18 @@
                     if (e.target.matches('.cv-input, .banner-input, .custom-section-input')) {
                         updatePreview('form');
                         updateAllStyles();
+                    }
+                    
+                    // Handle banner toggle
+                    if (e.target.id === 'toggle-banner-checkbox') {
+                        const bannerModule = document.getElementById('banner-module');
+                        const isChecked = e.target.checked;
+                        
+                        if (bannerModule) {
+                            bannerModule.style.display = isChecked ? 'block' : 'none';
+                        }
+                        
+                        showNotification(isChecked ? "🎯 Bannière recruteur activée" : "Bannière recruteur masquée", "success");
                     }
                 });
 
@@ -2361,6 +2417,8 @@
             
             function saveGeminiApiKey() {
                 const keyInput = document.getElementById('gemini-api-key');
+                const clearBtn = document.getElementById('clear-api-key-btn');
+                const saveBtn = document.getElementById('save-api-key-btn');
                 const key = keyInput.value.trim();
                 
                 if (!key) {
@@ -2370,19 +2428,84 @@
                 
                 localStorage.setItem('gemini-api-key', key);
                 geminiApiKey = key;
-                showNotification("Clé API Gemini enregistrée avec succès!", "success");
-                keyInput.type = 'password';
+                
+                // Lock the input and show clear button
                 keyInput.value = '●'.repeat(Math.min(key.length, 20));
+                keyInput.disabled = true;
+                keyInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                clearBtn.classList.remove('hidden');
+                saveBtn.classList.add('hidden');
+                
+                showNotification("🔐 Clé API Gemini enregistrée et sécurisée avec succès!", "success");
+            }
+            
+            function clearGeminiApiKey() {
+                const keyInput = document.getElementById('gemini-api-key');
+                const clearBtn = document.getElementById('clear-api-key-btn');
+                const saveBtn = document.getElementById('save-api-key-btn');
+                
+                localStorage.removeItem('gemini-api-key');
+                geminiApiKey = '';
+                
+                // Unlock the input
+                keyInput.value = '';
+                keyInput.disabled = false;
+                keyInput.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                keyInput.placeholder = 'Clé API Gemini';
+                clearBtn.classList.add('hidden');
+                saveBtn.classList.remove('hidden');
+                
+                showNotification("Clé API supprimée.", "success");
             }
             
             function loadSavedApiKey() {
                 const keyInput = document.getElementById('gemini-api-key');
+                const clearBtn = document.getElementById('clear-api-key-btn');
+                const saveBtn = document.getElementById('save-api-key-btn');
+                
                 if (geminiApiKey) {
                     keyInput.value = '●'.repeat(Math.min(geminiApiKey.length, 20));
+                    keyInput.disabled = true;
+                    keyInput.classList.add('bg-gray-100', 'cursor-not-allowed');
+                    clearBtn.classList.remove('hidden');
+                    saveBtn.classList.add('hidden');
                 }
             }
             
-            // --- CV SAVE/LOAD FUNCTIONALITY ---
+            // --- SHARE FUNCTIONALITY ---
+            function openShareModal() {
+                const shareModal = document.getElementById('share-modal');
+                const shareLinkInput = document.getElementById('share-link-input');
+                
+                // Generate a simple share link (in a real app, this would be a backend-generated link)
+                const cvData = {
+                    nom: controls.nom.value,
+                    prenom: controls.prenom.value,
+                    poste: controls.poste.value
+                };
+                
+                const shareLink = `${window.location.origin}${window.location.pathname}?shared=true&name=${encodeURIComponent(cvData.prenom + ' ' + cvData.nom)}&poste=${encodeURIComponent(cvData.poste)}`;
+                shareLinkInput.value = shareLink;
+                
+                shareModal.classList.add('active');
+                showNotification("🔗 Lien de partage généré!", "success");
+            }
+            
+            function closeShareModal() {
+                const shareModal = document.getElementById('share-modal');
+                shareModal.classList.remove('active');
+            }
+            
+            function copyShareLink() {
+                const shareLinkInput = document.getElementById('share-link-input');
+                shareLinkInput.select();
+                shareLinkInput.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+                    showNotification("📋 Lien copié dans le presse-papier!", "success");
+                }).catch(() => {
+                    showNotification("Erreur lors de la copie du lien", "error");
+                });
+            }
             function showSaveStatus() {
                 const saveStatus = document.getElementById('save-status');
                 saveStatus.style.opacity = '1';
@@ -2494,10 +2617,13 @@
             function initializeToolbarButtons() {
                 // API Key management
                 document.getElementById('save-api-key-btn').addEventListener('click', saveGeminiApiKey);
+                document.getElementById('clear-api-key-btn').addEventListener('click', clearGeminiApiKey);
+                
+                // Remove the old focus handler and add proper unlock functionality
                 document.getElementById('gemini-api-key').addEventListener('focus', function() {
-                    if (this.value.includes('●')) {
-                        this.type = 'text';
-                        this.value = geminiApiKey;
+                    if (this.disabled) {
+                        this.blur(); // Prevent focus on disabled input
+                        showNotification("Cliquez sur ✕ pour modifier la clé API", "error");
                     }
                 });
                 
@@ -2506,7 +2632,7 @@
                     const confirmed = await showConfirmModal("Nouveau CV", "Êtes-vous sûr de vouloir créer un nouveau CV ? Les données non sauvegardées seront perdues.");
                     if (confirmed) {
                         resetCVToDefault();
-                        showNotification("Nouveau CV créé!", "success");
+                        showNotification("✨ Nouveau CV créé avec succès!", "success");
                     }
                 });
                 
@@ -2515,10 +2641,12 @@
                 // PDF Download - use the existing function
                 document.getElementById('toolbar-download-pdf-btn').addEventListener('click', downloadPDF);
                 
-                // Share - use existing share functionality
-                document.getElementById('toolbar-share-btn').addEventListener('click', () => {
-                    controls.shareBtn.click();
-                });
+                // Share - use share functionality
+                document.getElementById('toolbar-share-btn').addEventListener('click', openShareModal);
+                
+                // Setup share modal handlers
+                document.getElementById('close-share-modal').addEventListener('click', closeShareModal);
+                document.getElementById('copy-share-link-btn').addEventListener('click', copyShareLink);
                 
                 // Anonymize - use existing anonymize functionality
                 document.getElementById('toolbar-anonymize-btn').addEventListener('click', () => {
@@ -2530,6 +2658,9 @@
                     document.body.classList.toggle('overflow-check-active');
                     e.currentTarget.classList.toggle('active', document.body.classList.contains('overflow-check-active'));
                     checkAllPagesOverflow();
+                    
+                    const isActive = document.body.classList.contains('overflow-check-active');
+                    showNotification(isActive ? "🔍 Détection de dépassement activée" : "Détection de dépassement désactivée", "success");
                 });
                 
                 // Presentation mode - use existing functionality
@@ -2538,6 +2669,8 @@
                     const isActive = document.body.classList.contains('presentation-mode');
                     e.currentTarget.classList.toggle('active', isActive);
                     e.currentTarget.innerHTML = `<i class="fas ${isActive ? 'fa-eye-slash' : 'fa-eye'}"></i> ${isActive ? 'Quitter' : 'Présentation'}`;
+                    
+                    showNotification(isActive ? "👁️ Mode présentation activé (F11 pour quitter)" : "Mode édition restauré", "success");
                 });
                 
                 // History buttons - use existing functions
@@ -2664,8 +2797,54 @@
                 }
             }
 
+            // --- FUNCTION VERIFICATION ---
+            function verifyAllFunctions() {
+                const functionsToCheck = [
+                    { name: 'saveGeminiApiKey', fn: saveGeminiApiKey },
+                    { name: 'clearGeminiApiKey', fn: clearGeminiApiKey },
+                    { name: 'saveCVData', fn: saveCVData },
+                    { name: 'loadCVData', fn: loadCVData },
+                    { name: 'downloadPDF', fn: downloadPDF },
+                    { name: 'openShareModal', fn: openShareModal },
+                    { name: 'anonymizeCV', fn: anonymizeCV },
+                    { name: 'checkAllPagesOverflow', fn: checkAllPagesOverflow }
+                ];
+                
+                const missingFunctions = functionsToCheck.filter(({ fn }) => typeof fn !== 'function');
+                
+                if (missingFunctions.length > 0) {
+                    console.warn('⚠️ Fonctions manquantes:', missingFunctions.map(f => f.name));
+                    showNotification(`⚠️ ${missingFunctions.length} fonction(s) manquante(s) détectée(s)`, "error");
+                } else {
+                    console.log('✅ Toutes les fonctions principales sont disponibles');
+                }
+                
+                // Vérify essential DOM elements
+                const essentialElements = [
+                    'gemini-api-key', 'save-api-key-btn', 'clear-api-key-btn',
+                    'new-cv-btn', 'save-cv-btn', 'toolbar-download-pdf-btn',
+                    'toolbar-share-btn', 'toolbar-anonymize-btn', 
+                    'toolbar-toggle-overflow-btn', 'toolbar-presentation-mode-btn'
+                ];
+                
+                const missingElements = essentialElements.filter(id => !document.getElementById(id));
+                
+                if (missingElements.length > 0) {
+                    console.warn('⚠️ Éléments DOM manquants:', missingElements);
+                } else {
+                    console.log('✅ Tous les éléments DOM essentiels sont présents');
+                }
+            }
+
             // --- START THE APP ---
             initializeAll();
+            
+            // Verify everything is working
+            setTimeout(() => {
+                verifyAllFunctions();
+                showNotification("🚀 CV Creator chargé avec succès!", "success");
+            }, 500);
+            
             resetCVToDefault(); // Start with a clean slate
         });
 
