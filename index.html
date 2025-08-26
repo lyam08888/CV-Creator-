@@ -4,22 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créateur de CV IA - Pro Recruteur</title>
-    <!-- Tailwind CSS - Version standalone pour éviter l'avertissement de production -->
-    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
+    <!-- Tailwind CSS -->
     <script>
-        // Configuration Tailwind pour éviter l'avertissement de production
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'montserrat': ['Montserrat', 'sans-serif'],
-                        'lato': ['Lato', 'sans-serif'],
-                        'playfair': ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
+        // Suppress Tailwind warnings in development
+        window.tailwindSuppress = true;
+    </script>
+    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -320,6 +310,8 @@
             right: 128%;
             left: auto;
             margin-left: 0;
+            background-color: #333;
+            color: white;
         }
         
         .tooltip-left .tooltip-text::after {
@@ -336,6 +328,8 @@
             left: 128%;
             right: auto;
             margin-left: 0;
+            background-color: #333;
+            color: white;
         }
         
         .tooltip-right .tooltip-text::after {
@@ -2412,7 +2406,7 @@
                 });
 
                 // --- PDF DOWNLOAD FUNCTION ---
-                async function downloadPDF() {
+                window.downloadPDF = async function downloadPDF() {
                     const filename = `CV_${controls.prenom.value}_${controls.nom.value}.pdf`.replace(/ /g, '_');
                     document.body.classList.add('presentation-mode');
 
@@ -2763,7 +2757,7 @@
                 document.getElementById('save-cv-btn').addEventListener('click', saveCVData);
                 
                 // PDF Download - use the existing function
-                document.getElementById('toolbar-download-pdf-btn').addEventListener('click', downloadPDF);
+                document.getElementById('toolbar-download-pdf-btn').addEventListener('click', window.downloadPDF);
                 
                 // Share - use share functionality
                 document.getElementById('toolbar-share-btn').addEventListener('click', openShareModal);
