@@ -2976,6 +2976,17 @@
                         showNotification("🧪 Test du système de notifications", "success");
                     }, 1000);
                     
+                    // Test tooltips
+                    const tooltipsCount = document.querySelectorAll('.tooltip').length;
+                    const toolbarButtons = document.querySelectorAll('#main-toolbar button').length;
+                    console.log(`📊 Statistiques des tooltips: ${tooltipsCount} tooltips pour ${toolbarButtons} boutons`);
+                    
+                    if (tooltipsCount >= toolbarButtons) {
+                        console.log('✅ Tous les boutons principaux ont des tooltips');
+                    } else {
+                        console.warn('⚠️ Certains boutons pourraient manquer de tooltips');
+                    }
+                    
                     console.log('✅ Système de notifications fonctionnel');
                 } catch (error) {
                     console.error('❌ Erreur dans le système de notifications:', error);
