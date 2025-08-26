@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créateur de CV IA - Pro Recruteur</title>
-    <!-- Tailwind CSS -->
-    <script>
-        // Suppress Tailwind warnings in development
-        window.tailwindSuppress = true;
-    </script>
-    <script src="https://cdn.tailwindcss.com/3.4.0"></script>
-    </script>
+    <!-- Tailwind CSS - Version locale pour production -->
+    <style>
+        @import url('https://unpkg.com/tailwindcss@3.4.0/dist/tailwind.min.css');
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:wght@400;700&family=Merriweather:wght@400;700&family=Oswald:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -201,6 +198,102 @@
         .gauge-number { font-weight: bold; color: var(--secondary-color); }
 
         .editable-wrapper { position: relative; }
+        
+        /* === ONGLETS FERMÉS === */
+        .collapsible-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .tab-header {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #374151;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab-header:hover {
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .tab-header.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .tab-header.completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-color: #059669;
+        }
+        
+        .tab-header.completed:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        
+        .tab-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .tab-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        
+        .tab-chevron {
+            transition: transform 0.3s ease;
+            font-size: 12px;
+        }
+        
+        .tab-header.active .tab-chevron {
+            transform: rotate(90deg);
+        }
+        
+        .tab-content-collapsible {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+            border-left: 3px solid #e5e7eb;
+            margin-left: 8px;
+        }
+        
+        .tab-content-collapsible.active {
+            max-height: 2000px;
+            padding: 16px;
+            border-left-color: #3b82f6;
+        }
+        
+        .progress-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .tab-header.completed .progress-badge {
+            background: rgba(255,255,255,0.3);
+        }
         .editable-wrapper .delete-line-btn { display: none; position: absolute; top: 50%; right: 2px; transform: translateY(-50%); cursor: pointer; color: #ef4444; background-color: white; border-radius: 50%; width: 18px; height: 18px; text-align: center; line-height: 18px; font-size: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 5; }
         .editable-wrapper:hover .delete-line-btn { display: flex; align-items: center; justify-content: center; }
         .history-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -622,78 +715,231 @@
             </div>
             
             <!-- NEW: Progress Bar -->
-            <div class="mb-4 flex-shrink-0">
-                <label class="text-sm font-medium text-gray-600">Progression</label>
-                <div id="progress-bar-container" class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-                    <div id="progress-bar" class="bg-green-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            <div class="mb-6 flex-shrink-0">
+                <label class="text-sm font-medium text-gray-600">Progression Générale</label>
+                <div id="progress-bar-container" class="w-full bg-gray-200 rounded-full h-3 mt-2">
+                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
-                <p id="progress-text" class="text-xs text-right text-gray-500 mt-1">0/X sections complétées</p>
+                <p id="progress-text" class="text-xs text-right text-gray-500 mt-1">0/16 sections complétées</p>
             </div>
 
-
-            <!-- TABS -->
-            <div id="tab-navigation" class="flex flex-wrap -mb-px border-b border-gray-200">
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-ia"><i class="fa-solid fa-robot mr-1"></i> IA</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-content"><i class="fa-solid fa-file-lines mr-1"></i> Contenu</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-skills"><i class="fa-solid fa-star mr-1"></i> Compétences</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-custom"><i class="fa-solid fa-puzzle-piece mr-1"></i> Sections</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-layout"><i class="fa-solid fa-columns mr-1"></i> Mise en Page</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-styles"><i class="fa-solid fa-palette mr-1"></i> Styles</button>
-                <button class="tab-btn -mb-px py-3 px-4 text-sm font-medium border-b-2 whitespace-nowrap" data-target="#panel-banner"><i class="fa-solid fa-user-tie mr-1"></i> Bannière</button>
-            </div>
-
-            <div id="tab-content" class="py-4 flex-grow overflow-y-auto">
-                <!-- TAB: IA -->
-                <div id="panel-ia" class="tab-panel space-y-4">
-                    <details class="control-group" open>
-                        <summary><span>Analyse IA</span><label class="completion-label"><input type="checkbox" id="completion-ia-analyse" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <textarea id="ai-input" rows="6" class="w-full p-2 border rounded-md" placeholder="Collez ici une description de poste, un CV brut..."></textarea>
-                            <button id="analyze-btn" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyser & Remplir</button>
+            <!-- ONGLETS FERMÉS -->
+            <div class="collapsible-tabs flex-grow">
+                
+                <!-- ONGLET IA -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-ia">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-robot text-lg"></i>
+                            <span>IA</span>
                         </div>
-                    </details>
-                    <details class="control-group" open>
-                        <summary><span>Présentation Recruteur</span><label class="completion-label"><input type="checkbox" id="completion-ia-presentation" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <input type="text" id="qualification-dispo" placeholder="Disponibilité" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
-                            <button id="generate-mail-btn" class="mt-2 w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2"><i class="fas fa-wand-magic-sparkles"></i> Générer le mail</button>
-                            <textarea id="recruiter-mail-content" rows="8" class="cv-input w-full p-2 border rounded-md mt-2" placeholder="Le mail de présentation apparaîtra ici..."></textarea>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/2</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
                         </div>
-                    </details>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-ia">
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <h4 class="font-semibold text-blue-800 mb-2">📝 Analyse IA</h4>
+                                <textarea id="ai-input" rows="6" class="w-full p-3 border rounded-md" placeholder="Collez ici une description de poste, un CV brut, ou tout texte à analyser..."></textarea>
+                                <button id="analyze-btn" class="w-full mt-3 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Analyser & Remplir
+                                </button>
+                            </div>
+                            
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h4 class="font-semibold text-green-800 mb-2">💼 Présentation Recruteur</h4>
+                                <div class="space-y-3">
+                                    <input type="text" id="qualification-dispo" placeholder="Disponibilité" class="cv-input w-full p-2 border rounded-md">
+                                    <input type="text" id="qualification-salaire" placeholder="Prétentions salariales" class="cv-input w-full p-2 border rounded-md">
+                                    <input type="text" id="qualification-loc" placeholder="Localisation" class="cv-input w-full p-2 border rounded-md">
+                                    <button id="generate-mail-btn" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 flex items-center justify-center gap-2">
+                                        <i class="fas fa-wand-magic-sparkles"></i> Générer le mail
+                                    </button>
+                                    <textarea id="recruiter-mail-content" rows="6" class="cv-input w-full p-2 border rounded-md" placeholder="Le mail de présentation apparaîtra ici..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- TAB: Contenu -->
-                <div id="panel-content" class="tab-panel hidden space-y-4">
-                    <details class="control-group" open>
-                        <summary><span>Informations Principales</span><label class="completion-label"><input type="checkbox" id="completion-content-infos" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-3">
-                            <input type="text" id="nom" placeholder="Nom" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="prenom" placeholder="Prénom" class="cv-input w-full p-2 border rounded-md">
-                            <input type="text" id="poste" placeholder="Poste recherché" class="cv-input w-full p-2 border rounded-md">
-                            <textarea id="description" placeholder="Description du profil" rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
+                <!-- ONGLET CONTENU -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-content">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-file-lines text-lg"></i>
+                            <span>Contenu</span>
                         </div>
-                    </details>
-                     <details class="control-group" open>
-                        <summary><span>Expériences</span><label class="completion-label"><input type="checkbox" id="completion-content-exp" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <div class="flex justify-end mb-2"><button id="add-experience" class="text-sm text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-circle-plus"></i> Ajouter un bloc</button></div>
-                            <div id="experience-list" class="space-y-2"></div>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/3</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
                         </div>
-                    </details>
-                     <details class="control-group" open>
-                        <summary><span>Formations</span><label class="completion-label"><input type="checkbox" id="completion-content-form" class="completion-checkbox"><span>Fait ✅</span></label></summary>
-                        <div class="control-group-content space-y-2">
-                            <div class="flex justify-end mb-2"><button id="add-formation" class="text-sm text-blue-600 hover:text-blue-800 font-medium"><i class="fas fa-circle-plus"></i> Ajouter un bloc</button></div>
-                            <div id="formation-list" class="space-y-2"></div>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-content">
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h4 class="font-semibold text-gray-800 mb-2">👤 Informations Principales</h4>
+                                <div class="space-y-3">
+                                    <input type="text" id="nom" placeholder="Nom" class="cv-input w-full p-2 border rounded-md">
+                                    <input type="text" id="prenom" placeholder="Prénom" class="cv-input w-full p-2 border rounded-md">
+                                    <input type="text" id="poste" placeholder="Poste recherché" class="cv-input w-full p-2 border rounded-md">
+                                    <textarea id="description" placeholder="Description du profil" rows="4" class="cv-input w-full p-2 border rounded-md"></textarea>
+                                </div>
+                            </div>
+                            </div>
+                            
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <h4 class="font-semibold text-orange-800 mb-2">💼 Expériences</h4>
+                                <div class="flex justify-end mb-2">
+                                    <button id="add-experience" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                        <i class="fas fa-circle-plus"></i> Ajouter un bloc
+                                    </button>
+                                </div>
+                                <div id="experience-list" class="space-y-2"></div>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                <h4 class="font-semibold text-purple-800 mb-2">🎓 Formations</h4>
+                                <div class="flex justify-end mb-2">
+                                    <button id="add-formation" class="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                                        <i class="fas fa-circle-plus"></i> Ajouter un bloc
+                                    </button>
+                                </div>
+                                <div id="formation-list" class="space-y-2"></div>
+                            </div>
                         </div>
-                    </details>
+                    </div>
+                </div>
+
+                <!-- ONGLET COMPÉTENCES -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-skills">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-star text-lg"></i>
+                            <span>Compétences</span>
+                        </div>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/1</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-skills">
+                        <div class="space-y-4">
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <h4 class="font-semibold text-yellow-800 mb-2">⭐ Compétences</h4>
+                                <textarea id="competences" placeholder="Liste des compétences..." rows="6" class="cv-input w-full p-2 border rounded-md"></textarea>
+                                <div class="mt-3 space-y-2">
+                                    <button id="organize-skills-btn" class="w-full bg-yellow-600 text-white py-2 px-4 rounded-md hover:bg-yellow-700 flex items-center justify-center gap-2">
+                                        <i class="fas fa-sort"></i> Organiser les compétences
+                                    </button>
+                                    <button id="limit-skills-btn" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 flex items-center justify-center gap-2">
+                                        <i class="fas fa-cut"></i> Limiter à 10
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONGLET SECTIONS -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-custom">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-puzzle-piece text-lg"></i>
+                            <span>Sections</span>
+                        </div>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/2</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-custom">
+                        <div class="space-y-4">
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-200">
+                                <h4 class="font-semibold text-red-800 mb-2">🧩 Sections Personnalisées</h4>
+                                <p class="text-sm text-gray-600 mb-3">Ajoutez des sections sur mesure à votre CV</p>
+                                <button class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 flex items-center justify-center gap-2">
+                                    <i class="fas fa-plus"></i> Ajouter une section
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONGLET MISE EN PAGE -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-layout">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-columns text-lg"></i>
+                            <span>Mise en Page</span>
+                        </div>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/2</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-layout">
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-200">
+                                <h4 class="font-semibold text-indigo-800 mb-2">📐 Configuration de la page</h4>
+                                <p class="text-sm text-gray-600">Options de disposition et mise en forme</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONGLET STYLES -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-styles">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-palette text-lg"></i>
+                            <span>Styles</span>
+                        </div>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/3</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-styles">
+                        <div class="space-y-4">
+                            <div class="bg-pink-50 p-4 rounded-lg border border-pink-200">
+                                <h4 class="font-semibold text-pink-800 mb-2">🎨 Personnalisation</h4>
+                                <p class="text-sm text-gray-600">Couleurs, polices et thèmes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ONGLET BANNIÈRE -->
+                <div class="tab-wrapper">
+                    <div class="tab-header" data-target="panel-banner">
+                        <div class="tab-title">
+                            <i class="fa-solid fa-user-tie text-lg"></i>
+                            <span>Bannière</span>
+                        </div>
+                        <div class="tab-progress">
+                            <span class="progress-badge">0/2</span>
+                            <i class="fas fa-chevron-right tab-chevron"></i>
+                        </div>
+                    </div>
+                    <div class="tab-content-collapsible" id="panel-banner">
+                        <div class="space-y-4">
+                            <div class="bg-teal-50 p-4 rounded-lg border border-teal-200">
+                                <h4 class="font-semibold text-teal-800 mb-2">🏷️ Bannière Recruteur</h4>
+                                <div class="space-y-3">
+                                    <label class="flex items-center gap-2">
+                                        <input type="checkbox" id="toggle-banner-checkbox" class="rounded">
+                                        <span class="text-sm">Activer la bannière recruteur</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- TAB: Compétences -->
-                <div id="panel-skills" class="tab-panel hidden space-y-4">
-                     <details class="control-group" open>
+            </div>
+        </div>
                         <summary><span>Compétences</span><label class="completion-label"><input type="checkbox" id="completion-skills" class="completion-checkbox"><span>Fait ✅</span></label></summary>
                         <div class="control-group-content space-y-3">
                             <p class="text-sm font-medium">Style de Présentation</p>
@@ -2048,6 +2294,138 @@
                 skills.forEach(skill => createSkillLevelItem(skill, 3));
             }
 
+            // --- COLLAPSIBLE TABS SYSTEM ---
+            function initializeCollapsibleTabs() {
+                const tabHeaders = document.querySelectorAll('.tab-header');
+                
+                tabHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const targetId = header.getAttribute('data-target');
+                        const targetContent = document.getElementById(targetId);
+                        const isActive = header.classList.contains('active');
+                        
+                        // Close all tabs
+                        tabHeaders.forEach(h => {
+                            h.classList.remove('active');
+                            const content = document.getElementById(h.getAttribute('data-target'));
+                            if (content) content.classList.remove('active');
+                        });
+                        
+                        // Open clicked tab if it wasn't active
+                        if (!isActive) {
+                            header.classList.add('active');
+                            if (targetContent) targetContent.classList.add('active');
+                        }
+                    });
+                });
+                
+                // Update progress counters
+                updateTabProgress();
+            }
+            
+            function updateTabProgress() {
+                // Update progress for each tab based on filled fields
+                const tabProgressData = {
+                    'panel-ia': calculateIAProgress(),
+                    'panel-content': calculateContentProgress(),
+                    'panel-skills': calculateSkillsProgress(),
+                    'panel-custom': calculateCustomProgress(),
+                    'panel-layout': calculateLayoutProgress(),
+                    'panel-styles': calculateStylesProgress(),
+                    'panel-banner': calculateBannerProgress()
+                };
+                
+                let totalCompleted = 0;
+                let totalSections = 0;
+                
+                Object.entries(tabProgressData).forEach(([panelId, progress]) => {
+                    const header = document.querySelector(`[data-target="${panelId}"]`);
+                    if (header) {
+                        const badge = header.querySelector('.progress-badge');
+                        if (badge) {
+                            badge.textContent = `${progress.completed}/${progress.total}`;
+                        }
+                        
+                        // Mark tab as completed if all sections are done
+                        if (progress.completed === progress.total && progress.total > 0) {
+                            header.classList.add('completed');
+                        } else {
+                            header.classList.remove('completed');
+                        }
+                    }
+                    
+                    totalCompleted += progress.completed;
+                    totalSections += progress.total;
+                });
+                
+                // Update global progress
+                const progressBar = document.getElementById('progress-bar');
+                const progressText = document.getElementById('progress-text');
+                if (progressBar && progressText) {
+                    const percentage = totalSections > 0 ? Math.round((totalCompleted / totalSections) * 100) : 0;
+                    progressBar.style.width = `${percentage}%`;
+                    progressText.textContent = `${totalCompleted}/${totalSections} sections complétées`;
+                }
+            }
+            
+            function calculateIAProgress() {
+                let completed = 0;
+                const total = 2;
+                
+                if (document.getElementById('ai-input')?.value.trim()) completed++;
+                if (document.getElementById('qualification-dispo')?.value.trim() || 
+                    document.getElementById('qualification-salaire')?.value.trim() || 
+                    document.getElementById('qualification-loc')?.value.trim()) completed++;
+                
+                return { completed, total };
+            }
+            
+            function calculateContentProgress() {
+                let completed = 0;
+                const total = 3;
+                
+                // Info personnelles
+                if (document.getElementById('nom')?.value.trim() && 
+                    document.getElementById('prenom')?.value.trim()) completed++;
+                
+                // Expériences
+                if (document.getElementById('experience-list')?.children.length > 0) completed++;
+                
+                // Formations
+                if (document.getElementById('formation-list')?.children.length > 0) completed++;
+                
+                return { completed, total };
+            }
+            
+            function calculateSkillsProgress() {
+                let completed = 0;
+                const total = 1;
+                
+                if (document.getElementById('competences')?.value.trim()) completed++;
+                
+                return { completed, total };
+            }
+            
+            function calculateCustomProgress() {
+                // Simplified for now
+                return { completed: 0, total: 2 };
+            }
+            
+            function calculateLayoutProgress() {
+                // Simplified for now  
+                return { completed: 0, total: 2 };
+            }
+            
+            function calculateStylesProgress() {
+                // Simplified for now
+                return { completed: 0, total: 3 };
+            }
+            
+            function calculateBannerProgress() {
+                // Simplified for now
+                return { completed: 0, total: 2 };
+            }
+
             // --- INITIALIZATION FUNCTION ---
             function initializeAll() {
                 console.log("Initializing UI components and event listeners...");
@@ -2057,27 +2435,18 @@
                 
                 populateFontSelectors();
                 populateIconPicker();
+                
+                // Initialize collapsible tabs
+                initializeCollapsibleTabs();
 
                 // --- EVENT LISTENERS ---
 
-                const tabNavigation = document.getElementById('tab-navigation');
-                const tabPanels = document.querySelectorAll('.tab-panel');
-                const tabButtons = document.querySelectorAll('.tab-btn');
-                
-                tabNavigation.addEventListener('click', (e) => {
-                    const tabBtn = e.target.closest('.tab-btn');
-                    if (!tabBtn) return;
-                    tabPanels.forEach(panel => panel.classList.add('hidden'));
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('border-blue-600', 'text-blue-600');
-                        btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                // Setup CV input listeners for progress tracking
+                document.querySelectorAll('.cv-input').forEach(input => {
+                    input.addEventListener('input', () => {
+                        setTimeout(updateTabProgress, 100); // Slight delay to ensure DOM is updated
                     });
-                    const targetPanelId = tabBtn.dataset.target;
-                    document.querySelector(targetPanelId).classList.remove('hidden');
-                    tabBtn.classList.add('border-blue-600', 'text-blue-600');
-                    tabBtn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
                 });
-                tabButtons[0].click();
 
                 // Note: undo/redo buttons are now handled in the toolbar, not here
                 document.addEventListener('keydown', (e) => {
