@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créateur de CV IA - Pro Recruteur</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./dist/output.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;500;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Roboto+Mono:wght@400;700&family=Merriweather:wght@400;700&family=Oswald:wght@400;700&family=Cormorant+Garamond:wght@400;700&family=Open+Sans:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -1192,7 +1192,7 @@
             const controls = {
                 aiInput: document.getElementById('ai-input'), analyzeBtn: document.getElementById('analyze-btn'), loader: document.getElementById('loader-overlay'), loaderText: document.getElementById('loader-text'),
                 nom: document.getElementById('nom'), prenom: document.getElementById('prenom'), poste: document.getElementById('poste'),
-                description: document.getElementById('description'), competences: document.getElementById('competences'), aiSynthesizeSkillsBtn: document.getElementById('ai-synthesize-skills-btn'),
+                description: document.getElementById('description'), competences: document.getElementById('competences'), organizeSkillsBtn: document.getElementById('organize-skills-btn'),
                 experienceList: document.getElementById('experience-list'), addExperienceBtn: document.getElementById('add-experience'),
                 formationList: document.getElementById('formation-list'), addFormationBtn: document.getElementById('add-formation'),
                 toggleBanner: document.getElementById('toggle-banner-checkbox'), bannerNom: document.getElementById('banner-nom'), bannerPoste: document.getElementById('banner-poste'), bannerEmail: document.getElementById('banner-email'), bannerTel: document.getElementById('banner-tel'), bannerImage: document.getElementById('banner-image'),
@@ -1203,7 +1203,7 @@
                 // Note: buttons moved to toolbar: anonymizeBtn, downloadPdfBtn, resetCvBtn, togglePresentationModeBtn, toggleOverflowBtn
                 aiSummarizeBtn: document.getElementById('ai-summarize-btn'),
                 resetRecruiterBtn: document.getElementById('reset-recruiter-btn'),
-                aiLimitSkillsBtn: document.getElementById('ai-limit-skills-btn'),
+                limitSkillsBtn: document.getElementById('limit-skills-btn'),
                 pageMargin: document.getElementById('page-margin'), pageMarginValue: document.getElementById('page-margin-value'),
                 moduleSpacing: document.getElementById('module-spacing'), moduleSpacingValue: document.getElementById('module-spacing-value'),
                 itemSpacing: document.getElementById('item-spacing'), itemSpacingValue: document.getElementById('item-spacing-value'),
@@ -2844,8 +2844,8 @@
                 // Note: Overflow detection button is now handled in toolbar
                 
                 controls.aiSummarizeBtn.addEventListener('click', summarizeAllExperiencesAI);
-                controls.aiSynthesizeSkillsBtn.addEventListener('click', synthesizeSkillsWithAI);
-                controls.aiLimitSkillsBtn.addEventListener('click', limitSkillsWithAI);
+                controls.organizeSkillsBtn.addEventListener('click', synthesizeSkillsWithAI);
+                controls.limitSkillsBtn.addEventListener('click', limitSkillsWithAI);
                 // Note: anonymize button is now in toolbar
                 controls.resetRecruiterBtn.addEventListener('click', () => { setDefaultRecruiterInfo(); updatePreview('form'); });
                 controls.addPageBtn.addEventListener('click', () => addNewPage());
